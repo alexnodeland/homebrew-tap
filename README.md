@@ -1,22 +1,19 @@
 # homebrew-tap
 
-Homebrew tap for [StatusBar](https://github.com/alexnodeland/StatusBar) — a macOS menu bar app for monitoring status pages.
+Homebrew tap for [alexnodeland](https://github.com/alexnodeland) projects.
 
-## Install
+## Usage
 
 ```bash
 brew tap alexnodeland/tap
+```
+
+## Available casks
+
+| Cask | Description |
+|------|-------------|
+| `statusbar` | Monitor status pages from the macOS menu bar |
+
+```bash
 brew install --cask statusbar
-```
-
-## Update
-
-```bash
-brew upgrade --cask statusbar
-```
-
-## Uninstall
-
-```bash
-brew uninstall --cask statusbar
 ```
