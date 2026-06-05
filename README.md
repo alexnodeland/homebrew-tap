@@ -13,7 +13,9 @@ brew tap alexnodeland/tap
 | Cask | Description |
 |------|-------------|
 | `statusbar` | Monitor status pages from the macOS menu bar |
+| `no-doze` | Keep your Mac awake from the menu bar (a free caffeinate wrapper) |
 
 ```bash
 brew install --cask statusbar
+brew install --cask no-doze
 ```
