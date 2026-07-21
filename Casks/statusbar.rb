@@ -8,6 +8,7 @@ cask "statusbar" do
   homepage "https://github.com/alexnodeland/StatusBar"
 
   app "StatusBar.app"
+  binary "#{appdir}/StatusBar.app/Contents/MacOS/statusbar-cli", target: "statusbar"
 
   zap trash: [
     "~/Library/Application Support/StatusBar",
