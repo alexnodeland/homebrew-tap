@@ -17,8 +17,8 @@
 # asserts that pattern still matches — so reformatting this file cannot
 # silently break the release.
 cask "tome" do
-  version "0.0.0"
-  sha256 "0000000000000000000000000000000000000000000000000000000000000000"
+  version "0.1.0"
+  sha256 "73443bd44720b2acee482b896a518f6ffafe581dd6d965df07634623d7b18436"
 
   url "https://github.com/alexnodeland/tome/releases/download/v#{version}/Tome-#{version}.dmg"
   name "Tome"
