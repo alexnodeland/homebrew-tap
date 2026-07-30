@@ -32,7 +32,7 @@ class Curator < Formula
     dylib = OS.mac? ? "libonnxruntime.dylib" : "libonnxruntime.so"
     libexec.install bin/"curator"
     (bin/"curator").write_env_script libexec/"curator",
-      ORT_DYLIB_PATH: "#{Formula["onnxruntime"].opt_lib}/#{dylib}"
+      ORT_DYLIB_PATH: "#{formula_opt_lib("onnxruntime")}/#{dylib}"
   end
 
   def caveats

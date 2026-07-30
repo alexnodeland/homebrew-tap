@@ -5,20 +5,36 @@
 # release and documents the Gatekeeper right-click-open path in `caveats`.
 # Source of truth: alexnodeland/curio-rss → dist/homebrew/Casks/curio.rb.
 cask "curio" do
-  # Unsigned + always-latest: the tap always installs whatever the latest
-  # GitHub release published, so there is no per-release sha256 to bump. One
-  # universal DMG (arm64 + x64) — matches the tap's other casks and avoids the
-  # scarce Intel CI runner.
-  version :latest
-  sha256 :no_check
+  # Pinned, not `:latest`. The app is unsigned, so this checksum is the only
+  # integrity check between GitHub's CDN and the machine installing it — and
+  # `brew upgrade` skips `version :latest` casks unless you pass `--greedy`,
+  # which is not what the README promised. `.github/workflows/bump.yml` keeps
+  # both lines current; do not edit them by hand.
+  # One universal DMG (arm64 + x64), which avoids the scarce Intel runner.
+  version "0.4.0"
+  sha256 "808490683549d5151a47d7a7f2427208eb539167f12afe4eec3d33b32ab526e3"
 
-  url "https://github.com/alexnodeland/curio-rss/releases/latest/download/Curio-universal.dmg",
-      verified: "github.com/alexnodeland/curio-rss/"
+  url "https://github.com/alexnodeland/curio-rss/releases/download/v#{version}/Curio-universal.dmg"
   name "Curio"
   desc "Local-first RSS reader"
   homepage "https://github.com/alexnodeland/curio-rss"
 
+  livecheck do
+    url :url
+    strategy :github_latest
+  end
+
+  depends_on :macos
+
   app "Curio.app"
+
+  # Full uninstall footprint (matches the app's platform paths:
+  # io.github.alexnodeland.curio data dir + the curio cache dir).
+  zap trash: [
+    "~/Library/Application Support/io.github.alexnodeland.curio",
+    "~/Library/Caches/curio",
+    "~/Library/Preferences/io.github.alexnodeland.curio.plist",
+  ]
 
   caveats <<~EOS
     Curio is NOT signed or notarized (Apple Developer enrollment is skipped),
@@ -33,12 +49,4 @@ cask "curio" do
 
     You only need to do this once per install.
   EOS
-
-  # Full uninstall footprint (matches the app's platform paths:
-  # io.github.alexnodeland.curio data dir + the curio cache dir).
-  zap trash: [
-    "~/Library/Application Support/io.github.alexnodeland.curio",
-    "~/Library/Caches/curio",
-    "~/Library/Preferences/io.github.alexnodeland.curio.plist",
-  ]
 end

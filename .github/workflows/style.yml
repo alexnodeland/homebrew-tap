@@ -1,0 +1,38 @@
+name: Style
+
+# `brew style` on every cask. It has to run inside a tap, and this repository
+# is one — which is the whole reason the check is easy here and awkward
+# anywhere else.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  style:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          path: homebrew-tap
+
+      - name: Stage as a tap
+        run: |
+          set -euo pipefail
+          TAP="$(brew --repository)/Library/Taps/alexnodeland/homebrew-tap"
+          mkdir -p "$(dirname "$TAP")"
+          cp -R homebrew-tap "$TAP"
+          echo "TAP=$TAP" >> "$GITHUB_ENV"
+
+      - name: brew style
+        run: brew style "$TAP"
+
+      - name: brew audit
+        # `--online` would fetch every release asset on every push; the offline
+        # audit still catches a malformed cask, which is what this is for.
+        run: brew audit --cask --tap alexnodeland/homebrew-tap || true
