@@ -1,0 +1,51 @@
+name: Bump casks
+
+# Keeps every pinned cask in step with its project's latest GitHub release.
+#
+# This lives in the tap rather than in each project's release workflow for one
+# practical reason: a workflow here can commit here with the ordinary
+# `GITHUB_TOKEN`, whereas pushing from four other repositories would need a
+# personal access token in each of them — four secrets to rotate, and four
+# places for one to leak. It also covers casks whose source repository this
+# account does not own.
+#
+# The cost is latency: a release is picked up on the next scheduled run.
+# `workflow_dispatch` is there for when that is too slow.
+
+on:
+  schedule:
+    # Twice a day. Releases here are not frequent enough to justify more, and
+    # each run downloads every changed asset to checksum it.
+    - cron: '17 7,19 * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: bump
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  bump:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Bump
+        id: bump
+        env:
+          # Unauthenticated GitHub API is 60 requests an hour per IP, which a
+          # shared runner exhausts without anyone noticing why.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python3 scripts/bump.py
+
+      - name: Commit
+        if: steps.bump.outputs.changed != ''
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add Casks
+          git commit -m "casks: ${{ steps.bump.outputs.changed }}"
+          git push
