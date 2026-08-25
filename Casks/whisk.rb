@@ -1,6 +1,6 @@
 cask "whisk" do
-  version "0.2.0"
-  sha256 "db666bb2421638e7538529958927d94273a256701be7530fadb8a04f26913f7b"
+  version "0.3.0"
+  sha256 "16c3fecc127ebc47f39cae05375735e02bcad2bdfcaf704f7a28a6f840f226e7"
 
   url "https://github.com/alexnodeland/whisk/releases/download/v#{version}/Whisk-universal.zip"
   name "Whisk"
