@@ -39,7 +39,9 @@ launch. Each cask's `caveats` carries the fix.
 | Formula | Description |
 |---------|-------------|
 | [`curator`](https://github.com/alexnodeland/curator) | Local-first knowledge plane: markdown vault + index + MCP for agents |
+| [`hoist`](https://hoist.alexnodeland.com/) | Read ahead of your agent: an MCP proxy that learns which reads an agent makes next and serves them in the same tool result |
 
 ```bash
 brew install alexnodeland/tap/curator
+brew install alexnodeland/tap/hoist
 ```
